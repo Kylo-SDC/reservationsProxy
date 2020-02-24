@@ -1,22 +1,26 @@
 require('newrelic');
 require('dotenv').config();
+const axios = require('axios');
 const express = require('express');
 const app = express();
 
 app.use(express.static('public'));
+app.use(express.json());
 
-const url = 'http://localhost:'
-const reservations = process.env.RESERVATIONS || 1111;
-const menus = process.env.MENU || 1112
-const reviews = process.env.REVIEWS || 1113;
-const photos = process.env.PHOTOS || 1114;
+
+const reservations = process.env.RESERVATIONS || 5500;
+// const menus = process.env.MENU || 5556
+// const reviews = process.env.REVIEWS || 5557;
+// const photos = process.env.PHOTOS || 5558;
 
 
 app.get('/api/reservations/:restaurantId/dateTime/:dateTime', (req, res) => {
   const restaurantId = req.params.restaurantId;
   const dateTime = req.params.dateTime;
-  axios.get(`${url}${reservations}/api/reservations/${restaurantId}/dateTime/${encodeURIComponent(dateTime)}`)
+  console.log(req.params);
+  axios.get(`http://localhost:5555/api/reservations/${restaurantId}/dateTime/${encodeURIComponent(dateTime)}`)
   .then((response) => {
+    console.log('page response!', response);
     res.status(200).json(response.data);
   })
   .catch(() => {
@@ -26,8 +30,9 @@ app.get('/api/reservations/:restaurantId/dateTime/:dateTime', (req, res) => {
 
 app.get('/api/reservations/:restaurantId', (req, res) => {
   const restaurantId = req.params.restaurantId;
-  axios.get(`${url}${reservations}/api/reservations/${restaurantId}`)
+  axios.get(`http://localhost:5555/api/reservations/${restaurantId}`)
   .then((response) => {
+    console.log('ID response!', response);
     res.status(200).json(response.data);
   })
   .catch(() => {
